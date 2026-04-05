@@ -43,15 +43,23 @@ const clearDirectory = (dirPath) => {
 }
 
 const importBundleIfNeeded = async () => {
-  if (!existsSync(bundleManifestPath)) return false
+  if (!existsSync(bundleManifestPath)) {
+    // eslint-disable-next-line no-console
+    console.log('[bundle] No se encontró manifest en:', bundleManifestPath)
+    return false
+  }
 
   const manifest = JSON.parse(readFileSync(bundleManifestPath, 'utf8'))
   const bundleFingerprint = manifest?.database?.exportedAt || manifest?.exportedAt || 'unknown'
+  // eslint-disable-next-line no-console
+  console.log('[bundle] Manifest encontrado, fingerprint:', bundleFingerprint)
 
   if (existsSync(importedStampPath)) {
     try {
       const stamp = JSON.parse(readFileSync(importedStampPath, 'utf8'))
       if (stamp?.fingerprint === bundleFingerprint) {
+        // eslint-disable-next-line no-console
+        console.log('[bundle] Bundle ya importado previamente en:', stamp.importedAt)
         return false
       }
     } catch (_error) {
@@ -59,6 +67,8 @@ const importBundleIfNeeded = async () => {
     }
   }
 
+  // eslint-disable-next-line no-console
+  console.log('[bundle] Importando bundle de datos...')
   await importPortableSnapshot(manifest.database)
 
   clearDirectory(DOCS_DIR)
@@ -81,6 +91,8 @@ const importBundleIfNeeded = async () => {
     'utf8',
   )
 
+  // eslint-disable-next-line no-console
+  console.log('[bundle] Importación completada correctamente.')
   return true
 }
 
@@ -589,24 +601,41 @@ app.use((err, req, res, next) => {
 
 initializeDb()
   .then(async () => {
-    await importBundleIfNeeded()
+    // eslint-disable-next-line no-console
+    console.log('[server] Base de datos inicializada correctamente')
+    // eslint-disable-next-line no-console
+    console.log('[server] DATA_DIR:', process.env.DATA_DIR || '(no definido, usando default)')
+    // eslint-disable-next-line no-console
+    console.log('[server] NODE_ENV:', process.env.NODE_ENV || 'development')
+    // eslint-disable-next-line no-console
+    console.log('[server] distPath existe:', existsSync(path.join(distPath, 'index.html')))
+
+    const bundleImported = await importBundleIfNeeded()
+    // eslint-disable-next-line no-console
+    console.log('[server] importBundleIfNeeded:', bundleImported ? 'bundle importado' : 'ya importado o no existe')
 
     const usersCount = await getUsersCount()
+    // eslint-disable-next-line no-console
+    console.log('[server] Usuarios en BD:', usersCount)
 
     if (usersCount === 0) {
+      // eslint-disable-next-line no-console
+      console.log('[server] BD vacía, ejecutando seed de demo...')
       await seedDemoAdmin()
       await seedDemoDashboardData()
       await seedTestUsers()
+      // eslint-disable-next-line no-console
+      console.log('[server] Seed completado. Admin: admin.ventura@gmail.com / admin1234')
     }
   })
   .then(() => {
     app.listen(port, '0.0.0.0', () => {
       // eslint-disable-next-line no-console
-      console.log(`Server running on port ${port}`)
+      console.log(`[server] Servidor escuchando en 0.0.0.0:${port}`)
     })
   })
   .catch((error) => {
     // eslint-disable-next-line no-console
-    console.error('Database initialization error:', error)
+    console.error('[server] ERROR al inicializar la base de datos:', error)
     process.exit(1)
   })

@@ -6,12 +6,29 @@ import 'animate.css'
 import './index.css'
 import App from './App.jsx'
 
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+
+// eslint-disable-next-line no-console
+console.log('[ventura] App inicializando...', {
+  env: import.meta.env.MODE,
+  googleOAuth: googleClientId ? 'configurado' : 'no configurado (social login desactivado)',
+  url: window.location.href,
+})
+
+const AppTree = (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+)
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </GoogleOAuthProvider>
+    {googleClientId ? (
+      <GoogleOAuthProvider clientId={googleClientId}>
+        {AppTree}
+      </GoogleOAuthProvider>
+    ) : (
+      AppTree
+    )}
   </StrictMode>,
 )
