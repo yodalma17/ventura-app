@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import bcrypt from 'bcryptjs'
 import multer from 'multer'
-import { mkdirSync, existsSync, unlinkSync } from 'node:fs'
+import { cpSync, mkdirSync, existsSync, readFileSync, rmSync, unlinkSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
@@ -18,6 +18,7 @@ import {
   getUserDetail,
   updateUser,
   initializeDb,
+  importPortableSnapshot,
   getDashboardData,
   seedDemoDashboardData,
   seedDemoAdmin,
@@ -32,6 +33,56 @@ const port = process.env.PORT || 4000
 // En producción, servir el frontend buildado
 const __serverDir = path.dirname(fileURLToPath(import.meta.url))
 const distPath = path.join(__serverDir, '..', 'dist')
+const bundleDir = path.join(__serverDir, 'data-portability', 'latest')
+const bundleManifestPath = path.join(bundleDir, 'manifest.json')
+const importedStampPath = path.join(path.dirname(DOCS_DIR), '.bundle-import.json')
+
+const clearDirectory = (dirPath) => {
+  rmSync(dirPath, { recursive: true, force: true })
+  mkdirSync(dirPath, { recursive: true })
+}
+
+const importBundleIfNeeded = async () => {
+  if (!existsSync(bundleManifestPath)) return false
+
+  const manifest = JSON.parse(readFileSync(bundleManifestPath, 'utf8'))
+  const bundleFingerprint = manifest?.database?.exportedAt || manifest?.exportedAt || 'unknown'
+
+  if (existsSync(importedStampPath)) {
+    try {
+      const stamp = JSON.parse(readFileSync(importedStampPath, 'utf8'))
+      if (stamp?.fingerprint === bundleFingerprint) {
+        return false
+      }
+    } catch (_error) {
+      // Ignore invalid stamp and continue with import
+    }
+  }
+
+  await importPortableSnapshot(manifest.database)
+
+  clearDirectory(DOCS_DIR)
+  clearDirectory(UPLOADS_DIR)
+
+  const docsSource = path.join(bundleDir, 'files', 'docs')
+  const uploadsSource = path.join(bundleDir, 'files', 'uploads')
+
+  if (existsSync(docsSource)) {
+    cpSync(docsSource, DOCS_DIR, { recursive: true })
+  }
+
+  if (existsSync(uploadsSource)) {
+    cpSync(uploadsSource, UPLOADS_DIR, { recursive: true })
+  }
+
+  writeFileSync(
+    importedStampPath,
+    JSON.stringify({ fingerprint: bundleFingerprint, importedAt: new Date().toISOString() }, null, 2),
+    'utf8',
+  )
+
+  return true
+}
 
 app.use('/api/docs', express.static(DOCS_DIR))
 app.use('/api/uploads', express.static(UPLOADS_DIR))
@@ -538,6 +589,8 @@ app.use((err, req, res, next) => {
 
 initializeDb()
   .then(async () => {
+    await importBundleIfNeeded()
+
     const usersCount = await getUsersCount()
 
     if (usersCount === 0) {
