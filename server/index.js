@@ -614,18 +614,22 @@ initializeDb()
     // eslint-disable-next-line no-console
     console.log('[server] importBundleIfNeeded:', bundleImported ? 'bundle importado' : 'ya importado o no existe')
 
+    // Garantizar siempre que el admin existe, independientemente del bundle
+    await seedDemoAdmin()
+    // eslint-disable-next-line no-console
+    console.log('[server] Admin garantizado: admin.ventura@gmail.com / admin1234')
+
     const usersCount = await getUsersCount()
     // eslint-disable-next-line no-console
     console.log('[server] Usuarios en BD:', usersCount)
 
-    if (usersCount === 0) {
+    if (usersCount <= 1) {
       // eslint-disable-next-line no-console
-      console.log('[server] BD vacía, ejecutando seed de demo...')
-      await seedDemoAdmin()
+      console.log('[server] BD sin usuarios de demo, ejecutando seed...')
       await seedDemoDashboardData()
       await seedTestUsers()
       // eslint-disable-next-line no-console
-      console.log('[server] Seed completado. Admin: admin.ventura@gmail.com / admin1234')
+      console.log('[server] Seed de demo completado')
     }
   })
   .then(() => {
