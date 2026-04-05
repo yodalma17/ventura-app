@@ -307,7 +307,7 @@ function HomePage({ language, onLanguageChange }) {
             <h2>{t.team.title}</h2>
             <p>{t.team.paragraphOne}</p>
             <p>{t.team.paragraphTwo}</p>
-            <Link className="btn btn-primary" to="/login">
+            <Link className="btn btn-primary team-cta" to="/login">
               {t.team.cta}
             </Link>
           </div>
