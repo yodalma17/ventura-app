@@ -252,7 +252,7 @@ function LoginPage({ language }) {
   return (
     <main className="login-page">
       <div className="login-background" aria-hidden="true" />
-      <section className="login-card wow animate__animated animate__fadeInUp" data-wow-delay="0.15s">
+      <section className="login-card animate__animated animate__fadeInUp">
         <p className="login-kicker">{t.kicker}</p>
         <h1>{title}</h1>
         <p>{subtitle}</p>
