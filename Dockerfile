@@ -20,6 +20,5 @@ ENV PORT=4000
 ENV DATA_DIR=/data
 
 EXPOSE 4000
-VOLUME ["/data"]
 
 CMD ["npm", "start"]
