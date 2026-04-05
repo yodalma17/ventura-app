@@ -41,6 +41,8 @@ const adminContent = {
     saving: 'Guardando...',
     save: 'Guardar cambios',
     saveOk: '✓ Cambios guardados correctamente',
+    emailPlaceholder: 'correo@ejemplo.com',
+    phonePlaceholder: '+34 600 000 000',
     sectionFinancial: 'Resumen financiero',
     statActiveProcedures: 'Trámites activos',
     statTotalPaid: 'Total pagado',
@@ -58,6 +60,9 @@ const adminContent = {
     paymentPaid: 'Pagado',
     downloadPdf: '↓ PDF',
     noProcedures: 'Este usuario aún no tiene trámites registrados.',
+    providerLocal: 'Email',
+    providerGoogle: 'Google',
+    providerMicrosoft: 'Microsoft',
   },
   en: {
     loading: 'Loading admin panel...',
@@ -97,6 +102,8 @@ const adminContent = {
     saving: 'Saving...',
     save: 'Save changes',
     saveOk: '✓ Changes saved successfully',
+    emailPlaceholder: 'email@example.com',
+    phonePlaceholder: '+34 600 000 000',
     sectionFinancial: 'Financial summary',
     statActiveProcedures: 'Active procedures',
     statTotalPaid: 'Total paid',
@@ -114,6 +121,9 @@ const adminContent = {
     paymentPaid: 'Paid',
     downloadPdf: '↓ PDF',
     noProcedures: 'This user has no registered procedures yet.',
+    providerLocal: 'Email',
+    providerGoogle: 'Google',
+    providerMicrosoft: 'Microsoft',
   },
 }
 
@@ -139,6 +149,17 @@ const AdminDashboard = ({ language = 'es' }) => {
   const [editForm, setEditForm] = useState({ name: '', email: '', phone: '', reviewStatus: 'pending', role: 'user' })
   const [saving, setSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)
+
+  const translateRole = (role) => (role === 'admin' ? t.roleAdmin : t.roleUser)
+  const translateProvider = (provider) => {
+    const providerMap = {
+      local: t.providerLocal,
+      google: t.providerGoogle,
+      microsoft: t.providerMicrosoft,
+    }
+
+    return providerMap[provider] || provider
+  }
 
   const authUser = JSON.parse(localStorage.getItem('ventura-auth-user') || '{}')
 
@@ -342,10 +363,10 @@ const AdminDashboard = ({ language = 'es' }) => {
                       </span>
                     </td>
                     <td>
-                      <span className={`role-badge role-${user.role}`}>{user.role}</span>
+                      <span className={`role-badge role-${user.role}`}>{translateRole(user.role)}</span>
                     </td>
                     <td>
-                      <span className="provider-badge">{user.provider}</span>
+                      <span className="provider-badge">{translateProvider(user.provider)}</span>
                     </td>
                     <td>{new Date(user.createdAt).toLocaleDateString(language === 'en' ? 'en-GB' : 'es-ES')}</td>
                     <td>
@@ -405,7 +426,7 @@ const AdminDashboard = ({ language = 'es' }) => {
                         value={editForm.email}
                         onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
                         className="edit-input"
-                        placeholder="correo@ejemplo.com"
+                        placeholder={t.emailPlaceholder}
                       />
                     </label>
                     <label>
@@ -415,7 +436,7 @@ const AdminDashboard = ({ language = 'es' }) => {
                         value={editForm.phone}
                         onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
                         className="edit-input"
-                        placeholder="+34 600 000 000"
+                        placeholder={t.phonePlaceholder}
                       />
                     </label>
                     <label>

@@ -50,6 +50,18 @@ const dashboardContent = {
     viewFile: 'Ver archivo',
     deleteFile: 'Eliminar',
     myProfile: 'Mi perfil',
+    languageSelect: 'Seleccionar idioma',
+    fileDeleted: 'archivo eliminado. Ya puedes subir otro.',
+    relationships: {
+      daughter: 'Hija',
+      son: 'Hijo',
+      wife: 'Esposa',
+      husband: 'Esposo',
+      mother: 'Madre',
+      father: 'Padre',
+      partner: 'Pareja',
+      child: 'Hijo/a',
+    },
   },
   en: {
     welcome: 'Hello',
@@ -98,6 +110,18 @@ const dashboardContent = {
     viewFile: 'View file',
     deleteFile: 'Delete',
     myProfile: 'My profile',
+    languageSelect: 'Select language',
+    fileDeleted: 'file deleted. You can upload another one now.',
+    relationships: {
+      daughter: 'Daughter',
+      son: 'Son',
+      wife: 'Wife',
+      husband: 'Husband',
+      mother: 'Mother',
+      father: 'Father',
+      partner: 'Partner',
+      child: 'Child',
+    },
   },
 }
 
@@ -172,6 +196,32 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
     return fileName.includes('/')
       ? `${apiBase}/uploads/${safePath}`
       : `${apiBase}/docs/${safePath}`
+  }
+
+  const translateRelationship = (value = '') => {
+    const normalized = value.trim().toLowerCase()
+
+    const relationshipMap = {
+      hija: t.relationships.daughter,
+      daughter: t.relationships.daughter,
+      hijo: t.relationships.son,
+      son: t.relationships.son,
+      esposa: t.relationships.wife,
+      wife: t.relationships.wife,
+      esposo: t.relationships.husband,
+      husband: t.relationships.husband,
+      madre: t.relationships.mother,
+      mother: t.relationships.mother,
+      padre: t.relationships.father,
+      father: t.relationships.father,
+      pareja: t.relationships.partner,
+      partner: t.relationships.partner,
+      hijo_a: t.relationships.child,
+      'hijo/a': t.relationships.child,
+      child: t.relationships.child,
+    }
+
+    return relationshipMap[normalized] || value
   }
 
   useEffect(() => {
@@ -285,7 +335,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
       syncDashboardData(result.dashboardData)
       setActionMessage({
         type: 'success',
-        message: `${title}: archivo eliminado. Ya puedes subir otro.`,
+        message: `${title}: ${t.fileDeleted}`,
       })
     } catch (error) {
       setActionMessage({ type: 'error', message: error.message })
@@ -347,13 +397,15 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
       <header className="dashboard-header">
         <div className="dashboard-brand">
           <span className="brand-text">Ventura</span>
-          <select className="language-select" value={language} onChange={(e) => onLanguageChange(e.target.value)} aria-label="Select language">
-            <option value="es">Español</option>
-            <option value="en">English</option>
-          </select>
         </div>
         <div className="dashboard-user">
-          <span className="user-name">{user.name.toUpperCase()}</span>
+          <div className="dashboard-user-meta">
+            <span className="user-name">{user.name.toUpperCase()}</span>
+            <select className="language-select" value={language} onChange={(e) => onLanguageChange(e.target.value)} aria-label={t.languageSelect}>
+              <option value="es">Español</option>
+              <option value="en">English</option>
+            </select>
+          </div>
           <button className="profile-btn" onClick={() => navigate('/profile')} title={t.myProfile} aria-label={t.myProfile}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -544,7 +596,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                   <ul className="case-list">
                     {item.members.map((member) => (
                       <li key={member.id}>
-                        {member.name} · {member.relationship}
+                        {member.name} · {translateRelationship(member.relationship)}
                       </li>
                     ))}
                   </ul>
