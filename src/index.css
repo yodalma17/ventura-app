@@ -1025,6 +1025,21 @@ h1 {
   gap: 1rem;
 }
 
+.dashboard-case-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dashboard-case-head h2 {
+  margin: 0;
+}
+
+.dashboard-case-head p {
+  margin-top: 0.45rem;
+}
+
 .dashboard-case-grid {
   display: grid;
   gap: 1rem;
@@ -1132,6 +1147,81 @@ h1 {
 
 .btn-case-delete:hover {
   background: rgba(220, 38, 38, 0.14);
+}
+
+.dashboard-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 35, 56, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.dashboard-modal {
+  width: min(32rem, 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: 0 1rem 2.5rem rgba(15, 35, 56, 0.28);
+  padding: 1.1rem;
+}
+
+.dashboard-modal h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.dashboard-modal p {
+  margin: 0.45rem 0 0;
+  color: var(--text-soft);
+}
+
+.dashboard-modal-form {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.dashboard-modal-form label {
+  margin-top: 0.3rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.dashboard-modal-form input {
+  min-height: 2.65rem;
+  border-radius: 0.7rem;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text-main);
+  padding: 0.6rem 0.8rem;
+}
+
+.dashboard-modal-form input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(199, 71, 31, 0.1);
+}
+
+.dashboard-modal-actions {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.dashboard-modal-actions .btn-secondary {
+  color: var(--text-main);
+  border-color: var(--line);
+  background: #fff;
+}
+
+.dashboard-modal-actions .btn-secondary:hover {
+  background: #f7f2ec;
 }
 
 .case-file-input {
@@ -1264,6 +1354,11 @@ h1 {
 
   .dashboard-case-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-case-head {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .uploaded-docs-list {

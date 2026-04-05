@@ -20,6 +20,7 @@ import {
   initializeDb,
   importPortableSnapshot,
   getDashboardData,
+  createFamilyMemberProcedure,
   seedDemoDashboardData,
   seedDemoAdmin,
   seedTestUsers,
@@ -287,6 +288,50 @@ app.delete('/api/documents/:documentId/file', async (req, res) => {
     })
   } catch (error) {
     res.status(500).json({ message: 'File deletion failed.', detail: error.message })
+  }
+})
+
+app.post('/api/family-members', async (req, res) => {
+  try {
+    const userId = Number.parseInt(req.body.userId, 10)
+    const familyName = (req.body.familyName || '').trim()
+    const relationship = (req.body.relationship || '').trim()
+    const procedureTitle = (req.body.procedureTitle || '').trim()
+
+    if (Number.isNaN(userId)) {
+      res.status(400).json({ message: 'Valid user ID required.' })
+      return
+    }
+
+    if (!familyName || !relationship || !procedureTitle) {
+      res.status(400).json({
+        message: 'Family member name, relationship and procedure title are required.',
+      })
+      return
+    }
+
+    const user = await findUserById(userId)
+    if (!user) {
+      res.status(404).json({ message: 'User not found.' })
+      return
+    }
+
+    const dashboardData = await createFamilyMemberProcedure({
+      userId,
+      familyName,
+      relationship,
+      procedureTitle,
+    })
+
+    res.status(201).json({
+      message: 'Family member added successfully.',
+      dashboardData,
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: 'Could not add family member.',
+      detail: error.message,
+    })
   }
 })
 

@@ -52,6 +52,19 @@ const dashboardContent = {
     myProfile: 'Mi perfil',
     languageSelect: 'Seleccionar idioma',
     fileDeleted: 'archivo eliminado. Ya puedes subir otro.',
+    addFamily: 'Anadir familiar',
+    addFamilyHint: 'Registra un familiar y su tramite para este usuario.',
+    familyModalTitle: 'Nuevo familiar',
+    familyName: 'Nombre del familiar',
+    familyRelationship: 'Parentesco',
+    familyProcedure: 'Tramite a realizar',
+    familyNamePlaceholder: 'Nombre y apellidos',
+    familyRelationshipPlaceholder: 'Ej: Hijo, Madre, Esposa',
+    familyProcedurePlaceholder: 'Ej: Reagrupacion familiar',
+    familySave: 'Guardar familiar',
+    familyCancel: 'Cancelar',
+    familySaved: 'Familiar agregado correctamente.',
+    familyRequired: 'Completa nombre, parentesco y tramite.',
     relationships: {
       daughter: 'Hija',
       son: 'Hijo',
@@ -121,6 +134,19 @@ const dashboardContent = {
     myProfile: 'My profile',
     languageSelect: 'Select language',
     fileDeleted: 'file deleted. You can upload another one now.',
+    addFamily: 'Add family member',
+    addFamilyHint: 'Register a family member and their procedure for this user.',
+    familyModalTitle: 'New family member',
+    familyName: 'Family member name',
+    familyRelationship: 'Relationship',
+    familyProcedure: 'Procedure to start',
+    familyNamePlaceholder: 'Full name',
+    familyRelationshipPlaceholder: 'e.g. Son, Mother, Wife',
+    familyProcedurePlaceholder: 'e.g. Family reunification',
+    familySave: 'Save family member',
+    familyCancel: 'Cancel',
+    familySaved: 'Family member added successfully.',
+    familyRequired: 'Please complete name, relationship and procedure.',
     relationships: {
       daughter: 'Daughter',
       son: 'Son',
@@ -150,6 +176,13 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
   const [loading, setLoading] = useState(true)
   const [actionMessage, setActionMessage] = useState(null)
   const [busyDocumentId, setBusyDocumentId] = useState(null)
+  const [isFamilyModalOpen, setIsFamilyModalOpen] = useState(false)
+  const [isSavingFamily, setIsSavingFamily] = useState(false)
+  const [familyForm, setFamilyForm] = useState({
+    name: '',
+    relationship: '',
+    procedureTitle: '',
+  })
   const uploadInputsRef = useRef({})
   const navigate = useNavigate()
   const apiBase = import.meta.env.VITE_API_URL || '/api'
@@ -370,6 +403,62 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
     }
   }
 
+  const openFamilyModal = (prefillProcedureTitle = '') => {
+    setFamilyForm({
+      name: '',
+      relationship: '',
+      procedureTitle: prefillProcedureTitle,
+    })
+    setIsFamilyModalOpen(true)
+  }
+
+  const closeFamilyModal = () => {
+    if (isSavingFamily) return
+    setIsFamilyModalOpen(false)
+  }
+
+  const handleFamilyInput = (field, value) => {
+    setFamilyForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleFamilySubmit = async (event) => {
+    event.preventDefault()
+    if (!user) return
+
+    const name = familyForm.name.trim()
+    const relationship = familyForm.relationship.trim()
+    const procedureTitle = familyForm.procedureTitle.trim()
+
+    if (!name || !relationship || !procedureTitle) {
+      setActionMessage({ type: 'error', message: t.familyRequired })
+      return
+    }
+
+    try {
+      setIsSavingFamily(true)
+      const result = await requestApi('/family-members', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          familyName: name,
+          relationship,
+          procedureTitle,
+        }),
+      })
+
+      syncDashboardData(result.dashboardData)
+      setActionMessage({ type: 'success', message: t.familySaved })
+      setIsFamilyModalOpen(false)
+    } catch (error) {
+      setActionMessage({ type: 'error', message: error.message })
+    } finally {
+      setIsSavingFamily(false)
+    }
+  }
+
   if (!user) {
     return null
   }
@@ -543,9 +632,14 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
           </div>
 
           <section className="dashboard-caseboard">
-            <div className="section-head wow animate__animated animate__fadeInUp" data-wow-delay="0.5s">
-              <h2>{t.testCases}</h2>
-              <p>{t.procedureTimeline}</p>
+            <div className="section-head dashboard-case-head wow animate__animated animate__fadeInUp" data-wow-delay="0.5s">
+              <div>
+                <h2>{t.testCases}</h2>
+                <p>{t.procedureTimeline}</p>
+              </div>
+              <button type="button" className="btn btn-case-action" onClick={() => openFamilyModal()}>
+                {t.addFamily}
+              </button>
             </div>
 
             <div className="dashboard-case-grid">
@@ -626,6 +720,15 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                       </li>
                     ))}
                   </ul>
+                  <div className="case-actions">
+                    <button
+                      type="button"
+                      className="btn btn-case-action"
+                      onClick={() => openFamilyModal(translateProcedureTitle(item.title))}
+                    >
+                      {t.addFamily}
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>
@@ -674,6 +777,56 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
           </section>
         </section>
       </section>
+
+      {isFamilyModalOpen && (
+        <div className="dashboard-modal-overlay" onClick={closeFamilyModal}>
+          <section className="dashboard-modal" onClick={(event) => event.stopPropagation()}>
+            <h3>{t.familyModalTitle}</h3>
+            <p>{t.addFamilyHint}</p>
+
+            <form className="dashboard-modal-form" onSubmit={handleFamilySubmit}>
+              <label htmlFor="family-name">{t.familyName}</label>
+              <input
+                id="family-name"
+                type="text"
+                value={familyForm.name}
+                onChange={(event) => handleFamilyInput('name', event.target.value)}
+                placeholder={t.familyNamePlaceholder}
+                required
+              />
+
+              <label htmlFor="family-relationship">{t.familyRelationship}</label>
+              <input
+                id="family-relationship"
+                type="text"
+                value={familyForm.relationship}
+                onChange={(event) => handleFamilyInput('relationship', event.target.value)}
+                placeholder={t.familyRelationshipPlaceholder}
+                required
+              />
+
+              <label htmlFor="family-procedure">{t.familyProcedure}</label>
+              <input
+                id="family-procedure"
+                type="text"
+                value={familyForm.procedureTitle}
+                onChange={(event) => handleFamilyInput('procedureTitle', event.target.value)}
+                placeholder={t.familyProcedurePlaceholder}
+                required
+              />
+
+              <div className="dashboard-modal-actions">
+                <button type="button" className="btn btn-secondary" onClick={closeFamilyModal} disabled={isSavingFamily}>
+                  {t.familyCancel}
+                </button>
+                <button type="submit" className="btn btn-primary" disabled={isSavingFamily}>
+                  {isSavingFamily ? '...' : t.familySave}
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
     </main>
   )
 }

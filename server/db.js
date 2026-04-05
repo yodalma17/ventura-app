@@ -310,6 +310,34 @@ export const createSocialUser = async ({ name, email, provider, role = 'user' })
   return findUserByEmail(email)
 }
 
+export const createFamilyMemberProcedure = async ({ userId, familyName, relationship, procedureTitle }) => {
+  const title = (procedureTitle || '').trim()
+  const name = (familyName || '').trim()
+  const relation = (relationship || '').trim()
+
+  if (!title || !name || !relation) {
+    throw new Error('Procedure title, family member name and relationship are required.')
+  }
+
+  const procedureResult = await run(
+    `
+      INSERT INTO procedures (user_id, title, type, status, payment_status, total_amount, paid_amount)
+      VALUES (?, ?, 'family-members', 'active', 'pending', 0, 0)
+    `,
+    [userId, title],
+  )
+
+  await run(
+    `
+      INSERT INTO family_members (procedure_id, name, relationship, status)
+      VALUES (?, ?, ?, 'pending')
+    `,
+    [procedureResult.id, name, relation],
+  )
+
+  return getDashboardData(userId)
+}
+
 export const seedDemoDashboardData = async () => {
   let demoUser = await findUserByEmail(DEMO_USER_EMAIL)
 
