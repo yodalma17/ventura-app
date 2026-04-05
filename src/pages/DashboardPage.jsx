@@ -67,6 +67,8 @@ const dashboardContent = {
     familySaved: 'Familiar agregado correctamente.',
     familyRequired: 'Completa nombre, parentesco, edad y tramite.',
     familyAgeInvalid: 'La edad debe estar entre 1 y 120.',
+    familyListTitle: 'Familiares registrados',
+    yearsSuffix: 'anos',
     relationships: {
       daughter: 'Hija',
       son: 'Hijo',
@@ -174,6 +176,8 @@ const dashboardContent = {
     familySaved: 'Family member added successfully.',
     familyRequired: 'Please complete name, relationship, age and procedure.',
     familyAgeInvalid: 'Age must be between 1 and 120.',
+    familyListTitle: 'Registered family members',
+    yearsSuffix: 'years',
     relationships: {
       daughter: 'Daughter',
       son: 'Son',
@@ -559,6 +563,12 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
         procedureTitle: procedure.title,
       })) || []
   )) || []
+  const familyMembersList = dashboardData?.alerts?.familyMembers?.flatMap((procedure) => (
+    procedure.members.map((member) => ({
+      ...member,
+      procedureTitle: procedure.title,
+    }))
+  )) || []
 
   const userInitials = user.name
     .split(' ')
@@ -764,32 +774,30 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                 </article>
               ))}
 
-              {dashboardData?.alerts?.familyMembers?.map((item, index) => (
+              {familyMembersList.length > 0 && (
                 <article
-                  key={`family-${item.id}`}
+                  key="family-list"
                   className="dashboard-case-card case-card-family wow animate__animated animate__fadeInUp"
-                  data-wow-delay={`${0.75 + index * 0.05}s`}
+                  data-wow-delay="0.75s"
                 >
                   <span className="case-tag">{t.additionalFamily}</span>
-                  <h3>{translateProcedureTitle(item.title)}</h3>
-                  <ul className="case-list">
-                    {item.members.map((member) => (
-                      <li key={member.id}>
-                        {member.name} · {translateRelationship(member.relationship)}
+                  <h3>{t.familyListTitle}</h3>
+                  <ul className="family-list">
+                    {familyMembersList.map((member) => (
+                      <li key={`family-row-${member.id}`} className="family-list-item">
+                        <div className="family-member-main">
+                          <strong>{member.name}</strong>
+                          <span>
+                            {translateRelationship(member.relationship)}
+                            {member.age ? ` · ${member.age} ${t.yearsSuffix}` : ''}
+                          </span>
+                        </div>
+                        <p className="family-member-procedure">{translateProcedureTitle(member.procedureTitle)}</p>
                       </li>
                     ))}
                   </ul>
-                  <div className="case-actions">
-                    <button
-                      type="button"
-                      className="btn btn-case-action"
-                      onClick={() => openFamilyModal(translateProcedureTitle(item.title))}
-                    >
-                      {t.addFamily}
-                    </button>
-                  </div>
                 </article>
-              ))}
+              )}
             </div>
           </section>
 
