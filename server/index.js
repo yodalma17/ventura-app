@@ -297,6 +297,10 @@ app.post('/api/family-members', async (req, res) => {
     const familyName = (req.body.familyName || '').trim()
     const relationship = (req.body.relationship || '').trim()
     const procedureTitle = (req.body.procedureTitle || '').trim()
+    const rawAge = req.body.age
+    const parsedAge = rawAge === undefined || rawAge === null || rawAge === ''
+      ? null
+      : Number.parseInt(rawAge, 10)
 
     if (Number.isNaN(userId)) {
       res.status(400).json({ message: 'Valid user ID required.' })
@@ -307,6 +311,11 @@ app.post('/api/family-members', async (req, res) => {
       res.status(400).json({
         message: 'Family member name, relationship and procedure title are required.',
       })
+      return
+    }
+
+    if (parsedAge !== null && (Number.isNaN(parsedAge) || parsedAge <= 0 || parsedAge > 120)) {
+      res.status(400).json({ message: 'Age must be a number between 1 and 120.' })
       return
     }
 
@@ -321,6 +330,7 @@ app.post('/api/family-members', async (req, res) => {
       familyName,
       relationship,
       procedureTitle,
+      age: parsedAge,
     })
 
     res.status(201).json({

@@ -138,11 +138,18 @@ export const initializeDb = async () => {
       procedure_id INTEGER NOT NULL,
       name TEXT NOT NULL,
       relationship TEXT NOT NULL,
+      age INTEGER,
       status TEXT NOT NULL DEFAULT 'pending',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (procedure_id) REFERENCES procedures(id)
     )
   `)
+
+  try {
+    await run('ALTER TABLE family_members ADD COLUMN age INTEGER')
+  } catch (_) {
+    // column already exists
+  }
 }
 
 export const findUserByEmail = async (email) => {
@@ -203,7 +210,7 @@ export const getUserDetail = async (userId) => {
         [proc.id],
       )
       const family = await all(
-        'SELECT id, name, relationship, status FROM family_members WHERE procedure_id = ?',
+        'SELECT id, name, relationship, age, status FROM family_members WHERE procedure_id = ?',
         [proc.id],
       )
       return { ...proc, payments, documentation, family_members: family }
@@ -310,10 +317,11 @@ export const createSocialUser = async ({ name, email, provider, role = 'user' })
   return findUserByEmail(email)
 }
 
-export const createFamilyMemberProcedure = async ({ userId, familyName, relationship, procedureTitle }) => {
+export const createFamilyMemberProcedure = async ({ userId, familyName, relationship, procedureTitle, age }) => {
   const title = (procedureTitle || '').trim()
   const name = (familyName || '').trim()
   const relation = (relationship || '').trim()
+  const normalizedAge = Number.isInteger(age) && age > 0 ? age : null
 
   if (!title || !name || !relation) {
     throw new Error('Procedure title, family member name and relationship are required.')
@@ -329,10 +337,10 @@ export const createFamilyMemberProcedure = async ({ userId, familyName, relation
 
   await run(
     `
-      INSERT INTO family_members (procedure_id, name, relationship, status)
-      VALUES (?, ?, ?, 'pending')
+      INSERT INTO family_members (procedure_id, name, relationship, age, status)
+      VALUES (?, ?, ?, ?, 'pending')
     `,
-    [procedureResult.id, name, relation],
+    [procedureResult.id, name, relation, normalizedAge],
   )
 
   return getDashboardData(userId)
@@ -520,7 +528,7 @@ export const getDashboardData = async (userId) => {
         [proc.id],
       )
       const family = await all(
-        'SELECT id, name, relationship, status FROM family_members WHERE procedure_id = ?',
+        'SELECT id, name, relationship, age, status FROM family_members WHERE procedure_id = ?',
         [proc.id],
       )
 
@@ -695,14 +703,15 @@ export const importPortableSnapshot = async (snapshot) => {
     for (const familyMember of tables.family_members) {
       await run(
         `
-          INSERT INTO family_members (id, procedure_id, name, relationship, status, created_at)
-          VALUES (?, ?, ?, ?, ?, ?)
+          INSERT INTO family_members (id, procedure_id, name, relationship, age, status, created_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
         `,
         [
           familyMember.id,
           familyMember.procedure_id,
           familyMember.name,
           familyMember.relationship,
+          familyMember.age ?? null,
           familyMember.status,
           familyMember.created_at,
         ],

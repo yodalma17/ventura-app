@@ -58,13 +58,15 @@ const dashboardContent = {
     familyName: 'Nombre del familiar',
     familyRelationship: 'Parentesco',
     familyProcedure: 'Tramite a realizar',
+    familyAge: 'Edad',
     familyNamePlaceholder: 'Nombre y apellidos',
-    familyRelationshipPlaceholder: 'Ej: Hijo, Madre, Esposa',
-    familyProcedurePlaceholder: 'Ej: Reagrupacion familiar',
+    familySelectPlaceholder: 'Selecciona una opcion',
+    familyAgePlaceholder: 'Edad del familiar',
     familySave: 'Guardar familiar',
     familyCancel: 'Cancelar',
     familySaved: 'Familiar agregado correctamente.',
-    familyRequired: 'Completa nombre, parentesco y tramite.',
+    familyRequired: 'Completa nombre, parentesco, edad y tramite.',
+    familyAgeInvalid: 'La edad debe estar entre 1 y 120.',
     relationships: {
       daughter: 'Hija',
       son: 'Hijo',
@@ -75,6 +77,29 @@ const dashboardContent = {
       partner: 'Pareja',
       child: 'Hijo/a',
     },
+    relationshipOptions: [
+      { value: 'Hijo', label: 'Hijo' },
+      { value: 'Hija', label: 'Hija' },
+      { value: 'Madre', label: 'Madre' },
+      { value: 'Padre', label: 'Padre' },
+      { value: 'Esposa', label: 'Esposa' },
+      { value: 'Esposo', label: 'Esposo' },
+      { value: 'Pareja', label: 'Pareja' },
+    ],
+    procedureOptions: [
+      { value: 'Arraigo Social', label: 'Arraigo Social' },
+      { value: 'Residencia por Arraigo Familiar', label: 'Residencia por Arraigo Familiar' },
+      { value: 'Homologacion Titulo Universitario', label: 'Homologacion Titulo Universitario' },
+      { value: 'Visado de Estudios Postgrado', label: 'Visado de Estudios Postgrado' },
+      { value: 'Reagrupacion Familiar Completa', label: 'Reagrupacion Familiar Completa' },
+      { value: 'Permiso Trabajo Cuenta Ajena', label: 'Permiso Trabajo Cuenta Ajena' },
+      { value: 'Renovacion TIE', label: 'Renovacion TIE' },
+      { value: 'Arraigo por Formacion', label: 'Arraigo por Formacion' },
+      { value: 'Certificado de Residencia Legal', label: 'Certificado de Residencia Legal' },
+      { value: 'Reagrupacion Familiar Conyuge', label: 'Reagrupacion Familiar Conyuge' },
+      { value: 'Residencia de Larga Duracion', label: 'Residencia de Larga Duracion' },
+      { value: 'Modificacion Residencia a Cuenta Ajena', label: 'Modificacion Residencia a Cuenta Ajena' },
+    ],
     proceduresMap: {
       'Modificacion Residencia a Cuenta Ajena': 'Modificacion Residencia a Cuenta Ajena',
     },
@@ -140,13 +165,15 @@ const dashboardContent = {
     familyName: 'Family member name',
     familyRelationship: 'Relationship',
     familyProcedure: 'Procedure to start',
+    familyAge: 'Age',
     familyNamePlaceholder: 'Full name',
-    familyRelationshipPlaceholder: 'e.g. Son, Mother, Wife',
-    familyProcedurePlaceholder: 'e.g. Family reunification',
+    familySelectPlaceholder: 'Select an option',
+    familyAgePlaceholder: 'Family member age',
     familySave: 'Save family member',
     familyCancel: 'Cancel',
     familySaved: 'Family member added successfully.',
-    familyRequired: 'Please complete name, relationship and procedure.',
+    familyRequired: 'Please complete name, relationship, age and procedure.',
+    familyAgeInvalid: 'Age must be between 1 and 120.',
     relationships: {
       daughter: 'Daughter',
       son: 'Son',
@@ -157,6 +184,29 @@ const dashboardContent = {
       partner: 'Partner',
       child: 'Child',
     },
+    relationshipOptions: [
+      { value: 'Hijo', label: 'Son' },
+      { value: 'Hija', label: 'Daughter' },
+      { value: 'Madre', label: 'Mother' },
+      { value: 'Padre', label: 'Father' },
+      { value: 'Esposa', label: 'Wife' },
+      { value: 'Esposo', label: 'Husband' },
+      { value: 'Pareja', label: 'Partner' },
+    ],
+    procedureOptions: [
+      { value: 'Arraigo Social', label: 'Social roots permit' },
+      { value: 'Residencia por Arraigo Familiar', label: 'Family roots residence' },
+      { value: 'Homologacion Titulo Universitario', label: 'University degree recognition' },
+      { value: 'Visado de Estudios Postgrado', label: 'Postgraduate study visa' },
+      { value: 'Reagrupacion Familiar Completa', label: 'Full family reunification' },
+      { value: 'Permiso Trabajo Cuenta Ajena', label: 'Employee work permit' },
+      { value: 'Renovacion TIE', label: 'TIE renewal' },
+      { value: 'Arraigo por Formacion', label: 'Training roots permit' },
+      { value: 'Certificado de Residencia Legal', label: 'Legal residence certificate' },
+      { value: 'Reagrupacion Familiar Conyuge', label: 'Spouse family reunification' },
+      { value: 'Residencia de Larga Duracion', label: 'Long-term residence' },
+      { value: 'Modificacion Residencia a Cuenta Ajena', label: 'Residence modification to employment' },
+    ],
     proceduresMap: {
       'Modificacion Residencia a Cuenta Ajena': 'Residence Modification to Employment',
     },
@@ -182,6 +232,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
     name: '',
     relationship: '',
     procedureTitle: '',
+    age: '',
   })
   const uploadInputsRef = useRef({})
   const navigate = useNavigate()
@@ -408,6 +459,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
       name: '',
       relationship: '',
       procedureTitle: prefillProcedureTitle,
+      age: '',
     })
     setIsFamilyModalOpen(true)
   }
@@ -428,9 +480,15 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
     const name = familyForm.name.trim()
     const relationship = familyForm.relationship.trim()
     const procedureTitle = familyForm.procedureTitle.trim()
+    const age = Number.parseInt(familyForm.age, 10)
 
-    if (!name || !relationship || !procedureTitle) {
+    if (!name || !relationship || !procedureTitle || Number.isNaN(age)) {
       setActionMessage({ type: 'error', message: t.familyRequired })
+      return
+    }
+
+    if (age <= 0 || age > 120) {
+      setActionMessage({ type: 'error', message: t.familyAgeInvalid })
       return
     }
 
@@ -446,6 +504,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
           familyName: name,
           relationship,
           procedureTitle,
+          age,
         }),
       })
 
@@ -796,24 +855,43 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
               />
 
               <label htmlFor="family-relationship">{t.familyRelationship}</label>
-              <input
+              <select
                 id="family-relationship"
-                type="text"
                 value={familyForm.relationship}
                 onChange={(event) => handleFamilyInput('relationship', event.target.value)}
-                placeholder={t.familyRelationshipPlaceholder}
+                required
+              >
+                <option value="">{t.familySelectPlaceholder}</option>
+                {t.relationshipOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+
+              <label htmlFor="family-age">{t.familyAge}</label>
+              <input
+                id="family-age"
+                type="number"
+                min="1"
+                max="120"
+                step="1"
+                value={familyForm.age}
+                onChange={(event) => handleFamilyInput('age', event.target.value)}
+                placeholder={t.familyAgePlaceholder}
                 required
               />
 
               <label htmlFor="family-procedure">{t.familyProcedure}</label>
-              <input
+              <select
                 id="family-procedure"
-                type="text"
                 value={familyForm.procedureTitle}
                 onChange={(event) => handleFamilyInput('procedureTitle', event.target.value)}
-                placeholder={t.familyProcedurePlaceholder}
                 required
-              />
+              >
+                <option value="">{t.familySelectPlaceholder}</option>
+                {t.procedureOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
 
               <div className="dashboard-modal-actions">
                 <button type="button" className="btn btn-secondary" onClick={closeFamilyModal} disabled={isSavingFamily}>
