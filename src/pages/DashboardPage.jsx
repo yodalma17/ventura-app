@@ -62,6 +62,15 @@ const dashboardContent = {
       partner: 'Pareja',
       child: 'Hijo/a',
     },
+    proceduresMap: {
+      'Modificacion Residencia a Cuenta Ajena': 'Modificacion Residencia a Cuenta Ajena',
+    },
+    documentsMap: {
+      'Pasaporte vigente': 'Pasaporte vigente',
+      'Contrato de trabajo indefinido': 'Contrato de trabajo indefinido',
+      'Vida laboral actualizada': 'Vida laboral actualizada',
+      'Nominas ultimos 3 meses': 'Nominas ultimos 3 meses',
+    },
   },
   en: {
     welcome: 'Hello',
@@ -121,6 +130,15 @@ const dashboardContent = {
       father: 'Father',
       partner: 'Partner',
       child: 'Child',
+    },
+    proceduresMap: {
+      'Modificacion Residencia a Cuenta Ajena': 'Residence Modification to Employment',
+    },
+    documentsMap: {
+      'Pasaporte vigente': 'Valid passport',
+      'Contrato de trabajo indefinido': 'Permanent employment contract',
+      'Vida laboral actualizada': 'Updated employment record',
+      'Nominas ultimos 3 meses': 'Last 3 months payslips',
     },
   },
 }
@@ -222,6 +240,14 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
     }
 
     return relationshipMap[normalized] || value
+  }
+
+  const translateProcedureTitle = (value = '') => {
+    return t.proceduresMap[value] || value
+  }
+
+  const translateDocumentTitle = (value = '') => {
+    return t.documentsMap[value] || value
   }
 
   useEffect(() => {
@@ -530,7 +556,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                   data-wow-delay={`${0.55 + index * 0.05}s`}
                 >
                   <span className="case-tag">{t.pendingPayments}</span>
-                  <h3>{item.title}</h3>
+                  <h3>{translateProcedureTitle(item.title)}</h3>
                   <div className="case-metrics">
                     <p>
                       <strong>{t.amountPaid}:</strong> {item.paidAmount} EUR
@@ -543,7 +569,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                     <button
                       type="button"
                       className="btn btn-case-action"
-                      onClick={() => handlePayClick(item.title)}
+                      onClick={() => handlePayClick(translateProcedureTitle(item.title))}
                     >
                       {t.payNow}
                     </button>
@@ -558,18 +584,18 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                   data-wow-delay={`${0.65 + index * 0.05}s`}
                 >
                   <span className="case-tag">{t.missingDocuments}</span>
-                  <h3>{item.title}</h3>
+                  <h3>{translateProcedureTitle(item.title)}</h3>
                   <ul className="case-list">
                     {item.missingDocuments.map((document) => (
                       <li key={document.id} className="case-list-item">
-                        <span>{document.title}</span>
+                        <span>{translateDocumentTitle(document.title)}</span>
                         <input
                           ref={(element) => {
                             uploadInputsRef.current[document.id] = element
                           }}
                           type="file"
                           className="case-file-input"
-                          onChange={(event) => handleUploadDocument(document.id, document.title, event.target.files)}
+                          onChange={(event) => handleUploadDocument(document.id, translateDocumentTitle(document.title), event.target.files)}
                         />
                         <button
                           type="button"
@@ -592,7 +618,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                   data-wow-delay={`${0.75 + index * 0.05}s`}
                 >
                   <span className="case-tag">{t.additionalFamily}</span>
-                  <h3>{item.title}</h3>
+                  <h3>{translateProcedureTitle(item.title)}</h3>
                   <ul className="case-list">
                     {item.members.map((member) => (
                       <li key={member.id}>
@@ -621,8 +647,8 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
               {uploadedDocuments.map((document) => (
                 <article key={`uploaded-${document.id}`} className="uploaded-doc-card">
                   <div>
-                    <p className="uploaded-doc-title">{document.title}</p>
-                    <p className="uploaded-doc-procedure">{document.procedureTitle}</p>
+                    <p className="uploaded-doc-title">{translateDocumentTitle(document.title)}</p>
+                    <p className="uploaded-doc-procedure">{translateProcedureTitle(document.procedureTitle)}</p>
                   </div>
                   <div className="uploaded-doc-actions">
                     <a
@@ -636,7 +662,7 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                     <button
                       type="button"
                       className="btn btn-case-action btn-case-delete"
-                      onClick={() => handleDeleteDocument(document.id, document.title)}
+                      onClick={() => handleDeleteDocument(document.id, translateDocumentTitle(document.title))}
                       disabled={busyDocumentId === document.id}
                     >
                       {busyDocumentId === document.id ? '...' : t.deleteFile}
