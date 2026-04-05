@@ -1,23 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useGoogleLogin } from '@react-oauth/google'
-import { PublicClientApplication } from '@azure/msal-browser'
 
-// Microsoft MSAL — instancia a nivel módulo
-const MICROSOFT_CLIENT_ID = import.meta.env.VITE_MICROSOFT_CLIENT_ID
-let msalInstance = null
-let msalInitPromise = null
-if (MICROSOFT_CLIENT_ID) {
-  msalInstance = new PublicClientApplication({
-    auth: {
-      clientId: MICROSOFT_CLIENT_ID,
-      authority: `https://login.microsoftonline.com/${import.meta.env.VITE_MICROSOFT_TENANT_ID || 'consumers'}`,
-      redirectUri: window.location.origin,
-    },
-    cache: { cacheLocation: 'sessionStorage' },
-  })
-  msalInitPromise = msalInstance.initialize()
-}
 
 const loginContent = {
   es: {
@@ -39,9 +22,6 @@ const loginContent = {
     back: 'Volver a inicio',
     switchToRegister: '¿No tienes cuenta? Regístrate',
     switchToLogin: '¿Ya tienes cuenta? Inicia sesión',
-    socialTitle: 'O continúa con',
-    withGoogle: 'Continuar con Google',
-    withMicrosoft: 'Continuar con Microsoft',
     successLogin: 'Sesión iniciada correctamente.',
     successRegister: 'Registro completado correctamente.',
     errors: {
@@ -70,9 +50,6 @@ const loginContent = {
     back: 'Back to home',
     switchToRegister: "Don't have an account? Sign up",
     switchToLogin: 'Already have an account? Sign in',
-    socialTitle: 'Or continue with',
-    withGoogle: 'Continue with Google',
-    withMicrosoft: 'Continue with Microsoft',
     successLogin: 'Logged in successfully.',
     successRegister: 'Registered successfully.',
     errors: {
@@ -215,57 +192,6 @@ function LoginPage({ language }) {
     }
   }
 
-  const processSocialLogin = async (provider, socialEmail, socialName) => {
-    try {
-      setIsLoading(true)
-      setStatus({ type: '', message: '' })
-      const result = await callApi('/auth/social', {
-        provider,
-        email: socialEmail,
-        name: socialName || 'Usuario',
-      })
-      saveSession(result.user, result.dashboardData)
-      setStatus({ type: 'success', message: t.successLogin })
-      setTimeout(() => navigate(getRedirectPath(result.user)), 800)
-    } catch (error) {
-      setStatus({ type: 'error', message: error.message || t.errors.generic })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const googleLogin = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      try {
-        const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
-        }).then((r) => r.json())
-        await processSocialLogin('google', userInfo.email, userInfo.name)
-      } catch {
-        setStatus({ type: 'error', message: t.errors.generic })
-      }
-    },
-    onError: () => setStatus({ type: 'error', message: t.errors.generic }),
-  })
-
-  const handleMicrosoftLogin = async () => {
-    if (!msalInstance) {
-      setStatus({ type: 'error', message: 'Microsoft login no configurado. Añade VITE_MICROSOFT_CLIENT_ID en .env.local' })
-      return
-    }
-    try {
-      await msalInitPromise
-      const result = await msalInstance.loginPopup({
-        scopes: ['openid', 'profile', 'email', 'User.Read'],
-      })
-      await processSocialLogin('microsoft', result.account.username, result.account.name)
-    } catch (error) {
-      if (!error.message?.includes('user_cancelled') && !error.errorCode?.includes('user_cancelled')) {
-        setStatus({ type: 'error', message: t.errors.generic })
-      }
-    }
-  }
-
   return (
     <main className="login-page">
       <div className="login-background" aria-hidden="true" />
@@ -339,29 +265,6 @@ function LoginPage({ language }) {
             )}
           </button>
         </form>
-
-        <div className="login-divider">
-          <span>{t.socialTitle}</span>
-        </div>
-
-        <div className="social-auth-actions">
-          <button
-            type="button"
-            className="btn social-btn social-btn-google social-btn--soon"
-            disabled
-            title="Próximamente — pendiente de configurar credenciales OAuth"
-          >
-            {t.withGoogle}
-          </button>
-          <button
-            type="button"
-            className="btn social-btn social-btn-microsoft social-btn--soon"
-            disabled
-            title="Próximamente — pendiente de configurar credenciales OAuth"
-          >
-            {t.withMicrosoft}
-          </button>
-        </div>
 
         {status.message ? (
           <p className={`auth-status ${status.type === 'error' ? 'auth-status-error' : 'auth-status-success'}`}>
