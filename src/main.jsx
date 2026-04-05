@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google'
 import 'animate.css'
 import './index.css'
 import App from './App.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
@@ -16,9 +17,11 @@ console.log('[ventura] App inicializando...', {
 })
 
 const AppTree = (
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <ErrorBoundary>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ErrorBoundary>
 )
 
 createRoot(document.getElementById('root')).render(

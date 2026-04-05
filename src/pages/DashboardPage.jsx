@@ -143,11 +143,17 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
   }
 
   const loadDashboardData = async (userId, fallbackData = null) => {
+    // eslint-disable-next-line no-console
+    console.log('[dashboard] Cargando datos para userId:', userId)
     try {
       const freshDashboardData = await requestApi(`/dashboard?userId=${userId}`)
+      // eslint-disable-next-line no-console
+      console.log('[dashboard] Datos cargados OK')
       syncDashboardData(freshDashboardData)
       return freshDashboardData
     } catch (_error) {
+      // eslint-disable-next-line no-console
+      console.warn('[dashboard] Error al cargar datos de API, usando fallback:', _error.message)
       if (fallbackData) {
         syncDashboardData(fallbackData)
         return fallbackData
@@ -171,14 +177,20 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
   useEffect(() => {
     const authUser = window.localStorage.getItem('ventura-auth-user')
     const storedDashboardData = window.localStorage.getItem('ventura-dashboard-data')
+    // eslint-disable-next-line no-console
+    console.log('[dashboard] Comprobando sesión...', { tieneAuth: !!authUser })
 
     if (!authUser) {
+      // eslint-disable-next-line no-console
+      console.warn('[dashboard] Sin sesión, redirigiendo a /login')
       navigate('/login')
       return
     }
 
     try {
       const userData = JSON.parse(authUser)
+      // eslint-disable-next-line no-console
+      console.log('[dashboard] Sesión activa:', { id: userData.id, email: userData.email, role: userData.role })
       setUser(userData)
       const parsedStoredDashboardData = storedDashboardData ? JSON.parse(storedDashboardData) : null
 
@@ -187,6 +199,8 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
           setLoading(false)
         })
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('[dashboard] Error al parsear sesión:', error.message)
       navigate('/login')
     }
   }, [navigate])

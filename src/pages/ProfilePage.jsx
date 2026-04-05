@@ -68,11 +68,15 @@ function ProfilePage({ language = 'es' }) {
     try {
       const userStr = window.localStorage.getItem('ventura-auth-user')
       if (!userStr) {
+        // eslint-disable-next-line no-console
+        console.warn('[profile] Sin sesión, redirigiendo a /login')
         navigate('/login')
         return
       }
 
       const user = JSON.parse(userStr)
+      // eslint-disable-next-line no-console
+      console.log('[profile] Sesión activa:', { id: user.id, email: user.email })
       setFormData({
         name: user.name || '',
         email: user.email || '',
@@ -84,6 +88,8 @@ function ProfilePage({ language = 'es' }) {
         phone: user.phone || '',
       })
     } catch {
+      // eslint-disable-next-line no-console
+      console.error('[profile] Error al parsear sesión, redirigiendo a /login')
       navigate('/login')
     }
   }, [navigate])
@@ -121,8 +127,12 @@ function ProfilePage({ language = 'es' }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    // eslint-disable-next-line no-console
+    console.log('[profile] handleSubmit →', formData)
 
     if (!validateForm()) {
+      // eslint-disable-next-line no-console
+      console.warn('[profile] Formulario inválido')
       return
     }
 
@@ -185,6 +195,8 @@ function ProfilePage({ language = 'es' }) {
 
       const updatedUser = { ...user, name: data.user.name, email: data.user.email, phone: data.user.phone }
       window.localStorage.setItem('ventura-auth-user', JSON.stringify(updatedUser))
+      // eslint-disable-next-line no-console
+      console.log('[profile] Perfil actualizado OK:', updatedUser.email)
       setMessage(t.success)
       setOriginalData(formData)
 
@@ -193,7 +205,7 @@ function ProfilePage({ language = 'es' }) {
       }, 1500)
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Profile update error:', error)
+      console.error('[profile] handleSubmit error:', error.message)
       setMessage(error.message || t.error)
     } finally {
       setLoading(false)

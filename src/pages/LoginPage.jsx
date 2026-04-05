@@ -134,15 +134,24 @@ function LoginPage({ language }) {
   }
 
   const callApi = async (endpoint, payload) => {
+    // eslint-disable-next-line no-console
+    console.log('[login] callApi →', endpoint, { apiBase })
     try {
-      return await doRequest(`${apiBase}${endpoint}`, payload)
+      const result = await doRequest(`${apiBase}${endpoint}`, payload)
+      // eslint-disable-next-line no-console
+      console.log('[login] callApi OK →', endpoint)
+      return result
     } catch (error) {
       const isNetworkFailure = error instanceof TypeError
+      // eslint-disable-next-line no-console
+      console.warn('[login] callApi error →', endpoint, error.message, { isNetworkFailure })
 
       if (!isNetworkFailure || apiBase !== '/api') {
         throw error
       }
 
+      // eslint-disable-next-line no-console
+      console.log('[login] Reintentando con localhost:4000...')
       return doRequest(`http://localhost:4000/api${endpoint}`, payload)
     }
   }
@@ -150,8 +159,12 @@ function LoginPage({ language }) {
   const handleSubmit = async (event) => {
     event.preventDefault()
     setStatus({ type: '', message: '' })
+    // eslint-disable-next-line no-console
+    console.log('[login] handleSubmit →', { mode, email })
 
     if (!email || !password || (mode === 'register' && !name)) {
+      // eslint-disable-next-line no-console
+      console.warn('[login] Campos incompletos')
       setStatus({ type: 'error', message: t.errors.requiredFields })
       return
     }
@@ -185,6 +198,8 @@ function LoginPage({ language }) {
         password,
       })
 
+      // eslint-disable-next-line no-console
+      console.log('[login] Login OK → usuario:', result.user?.email, 'role:', result.user?.role)
       saveSession(result.user, result.dashboardData)
       setStatus({ type: 'success', message: t.successLogin })
       
@@ -192,6 +207,8 @@ function LoginPage({ language }) {
         navigate(getRedirectPath(result.user))
       }, 800)
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('[login] handleSubmit error:', error.message)
       setStatus({ type: 'error', message: error.message || t.errors.generic })
     } finally {
       setIsLoading(false)

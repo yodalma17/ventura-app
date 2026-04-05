@@ -143,7 +143,11 @@ const AdminDashboard = ({ language = 'es' }) => {
   const authUser = JSON.parse(localStorage.getItem('ventura-auth-user') || '{}')
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('[admin] Comprobando acceso admin...', { role: authUser.role, id: authUser.id })
     if (authUser.role !== 'admin') {
+      // eslint-disable-next-line no-console
+      console.warn('[admin] Acceso denegado, redirigiendo a /')
       navigate('/')
       return
     }
@@ -154,6 +158,8 @@ const AdminDashboard = ({ language = 'es' }) => {
     try {
       setLoading(true)
       setError('')
+      // eslint-disable-next-line no-console
+      console.log('[admin] Cargando lista de usuarios...')
       const response = await fetch('/api/admin/users', {
         headers: { 'x-user-id': authUser.id, 'x-user-role': authUser.role },
       })
@@ -162,8 +168,12 @@ const AdminDashboard = ({ language = 'es' }) => {
         throw new Error(data.message || 'Error al cargar usuarios')
       }
       const data = await response.json()
+      // eslint-disable-next-line no-console
+      console.log('[admin] Usuarios cargados:', data.users?.length)
       setUsers(data.users || [])
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[admin] fetchUsers error:', err.message)
       setError(err.message)
     } finally {
       setLoading(false)
@@ -216,6 +226,8 @@ const AdminDashboard = ({ language = 'es' }) => {
     try {
       setSaving(true)
       setError('')
+      // eslint-disable-next-line no-console
+      console.log('[admin] Guardando cambios usuario id:', selectedUser.id, editForm)
       const response = await fetch(`/api/admin/users/${selectedUser.id}`, {
         method: 'PUT',
         headers: {
@@ -236,12 +248,16 @@ const AdminDashboard = ({ language = 'es' }) => {
         throw new Error(data.message || 'Error al guardar')
       }
       const data = await response.json()
+      // eslint-disable-next-line no-console
+      console.log('[admin] Guardado OK:', data.user?.email)
       // Actualiza tabla y usuario seleccionado
       setUsers(users.map((u) => (u.id === selectedUser.id ? { ...u, ...data.user } : u)))
       setSelectedUser((prev) => ({ ...prev, ...data.user }))
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[admin] saveUserEdit error:', err.message)
       setError(err.message)
     } finally {
       setSaving(false)
