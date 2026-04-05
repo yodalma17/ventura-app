@@ -3,11 +3,12 @@ FROM node:22-bookworm-slim
 WORKDIR /app
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends python3 make g++ \
+  && apt-get install -y --no-install-recommends python3 make g++ pkg-config libsqlite3-dev \
   && rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./
-RUN npm install
+ENV npm_config_build_from_source=true
+RUN npm install --build-from-source=sqlite3
 
 COPY . .
 
