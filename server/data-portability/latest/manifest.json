@@ -1,0 +1,787 @@
+{
+  "format": "ventura-portable-bundle",
+  "version": 1,
+  "exportedAt": "2026-04-05T15:06:17.401Z",
+  "database": {
+    "version": 1,
+    "exportedAt": "2026-04-05T15:06:17.401Z",
+    "tables": {
+      "users": [
+        {
+          "id": 1,
+          "name": "Admin Ventura",
+          "email": "admin.ventura@gmail.com",
+          "password_hash": "$2b$10$AbTlpsjsvA9bY.8oK4V8Te4s2rpNrJUfAtEDfL3Pom0KcBuyGZ5V2",
+          "provider": "local",
+          "role": "admin",
+          "review_status": "pending",
+          "created_at": "2026-04-05 14:29:23",
+          "phone": null
+        },
+        {
+          "id": 2,
+          "name": "Demo User",
+          "email": "demo.user.ventura@gmail.com",
+          "password_hash": "$2b$10$6ZPddyBhGwB/G3nbG0tbrO3jYRZMfA3hHEO3gCItsAvBA3RAqzmPG",
+          "provider": "local",
+          "role": "user",
+          "review_status": "pending",
+          "created_at": "2026-04-05 14:29:23",
+          "phone": null
+        },
+        {
+          "id": 3,
+          "name": "Carlos Mendez Rosas",
+          "email": "carlos.mendez@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "pending",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 001 001"
+        },
+        {
+          "id": 4,
+          "name": "Fatima Ouali El Harti",
+          "email": "fatima.ouali@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "pending",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 002 002"
+        },
+        {
+          "id": 5,
+          "name": "Andrei Popescu Ionescu",
+          "email": "andrei.popescu@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "reviewed",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 003 003"
+        },
+        {
+          "id": 6,
+          "name": "Priya Sharma Nair",
+          "email": "priya.sharma@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "reviewed",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 004 004"
+        },
+        {
+          "id": 7,
+          "name": "Moussa Diallo Traore",
+          "email": "moussa.diallo@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "pending",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 005 005"
+        },
+        {
+          "id": 8,
+          "name": "Daniela Reyes Castillo",
+          "email": "daniela.reyes@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "complete",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 006 006"
+        },
+        {
+          "id": 9,
+          "name": "Yusuf Al-Rashid Hassan",
+          "email": "yusuf.rashid@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "pending",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 007 007"
+        },
+        {
+          "id": 10,
+          "name": "Li Wei Zhang",
+          "email": "li.wei.zhang@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "reviewed",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 008 008"
+        },
+        {
+          "id": 11,
+          "name": "Valentina Kozlov Petrov",
+          "email": "valentina.kozlov@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "pending",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 009 009"
+        },
+        {
+          "id": 12,
+          "name": "Omar Benali Khaled",
+          "email": "omar.benali@test.com",
+          "password_hash": "$2b$10$eDNiXzuOi4lY9niuvVexKOd5D6iVykEKjnLmc/UjE3jfl8v26zUYW",
+          "provider": "local",
+          "role": "user",
+          "review_status": "reviewed",
+          "created_at": "2026-04-05 14:45:04",
+          "phone": "+34 612 010 010"
+        }
+      ],
+      "procedures": [
+        {
+          "id": 94,
+          "user_id": 2,
+          "title": "Arraigo familiar paso a paso",
+          "type": "pending-payment",
+          "status": "active",
+          "payment_status": "pending",
+          "total_amount": 1490,
+          "paid_amount": 490,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 95,
+          "user_id": 2,
+          "title": "Homologacion universitaria",
+          "type": "pending-documentation",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 690,
+          "paid_amount": 690,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 96,
+          "user_id": 2,
+          "title": "Reagrupacion familiar expediente completo",
+          "type": "family-members",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 1890,
+          "paid_amount": 1890,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 97,
+          "user_id": 3,
+          "title": "Arraigo Social",
+          "type": "pending-payment",
+          "status": "active",
+          "payment_status": "pending",
+          "total_amount": 1200,
+          "paid_amount": 0,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 98,
+          "user_id": 4,
+          "title": "Residencia por Arraigo Familiar",
+          "type": "pending-payment",
+          "status": "active",
+          "payment_status": "pending",
+          "total_amount": 1490,
+          "paid_amount": 490,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 99,
+          "user_id": 5,
+          "title": "Homologacion Titulo Universitario",
+          "type": "pending-documentation",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 690,
+          "paid_amount": 690,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 100,
+          "user_id": 6,
+          "title": "Visado de Estudios Postgrado",
+          "type": "pending-documentation",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 850,
+          "paid_amount": 850,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 101,
+          "user_id": 7,
+          "title": "Reagrupacion Familiar Completa",
+          "type": "family-members",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 2100,
+          "paid_amount": 2100,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 102,
+          "user_id": 8,
+          "title": "Permiso Trabajo Cuenta Ajena",
+          "type": "pending-documentation",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 1350,
+          "paid_amount": 1350,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 103,
+          "user_id": 8,
+          "title": "Renovacion TIE",
+          "type": "pending-documentation",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 480,
+          "paid_amount": 480,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 104,
+          "user_id": 9,
+          "title": "Arraigo por Formacion",
+          "type": "pending-payment",
+          "status": "active",
+          "payment_status": "pending",
+          "total_amount": 990,
+          "paid_amount": 0,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 105,
+          "user_id": 9,
+          "title": "Certificado de Residencia Legal",
+          "type": "pending-documentation",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 290,
+          "paid_amount": 290,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 106,
+          "user_id": 10,
+          "title": "Reagrupacion Familiar Conyuge",
+          "type": "family-members",
+          "status": "active",
+          "payment_status": "paid",
+          "total_amount": 1600,
+          "paid_amount": 1600,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 107,
+          "user_id": 11,
+          "title": "Residencia de Larga Duracion",
+          "type": "pending-payment",
+          "status": "active",
+          "payment_status": "pending",
+          "total_amount": 1750,
+          "paid_amount": 0,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 108,
+          "user_id": 12,
+          "title": "Modificacion Residencia a Cuenta Ajena",
+          "type": "family-members",
+          "status": "active",
+          "payment_status": "pending",
+          "total_amount": 1890,
+          "paid_amount": 700,
+          "created_at": "2026-04-05 15:03:20"
+        }
+      ],
+      "payments": [
+        {
+          "id": 113,
+          "procedure_id": 94,
+          "amount": 490,
+          "status": "paid",
+          "payment_date": "2026-04-02 10:15:00",
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 114,
+          "procedure_id": 94,
+          "amount": 1000,
+          "status": "pending",
+          "payment_date": null,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 115,
+          "procedure_id": 95,
+          "amount": 690,
+          "status": "paid",
+          "payment_date": "2026-04-01 09:30:00",
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 116,
+          "procedure_id": 96,
+          "amount": 1890,
+          "status": "paid",
+          "payment_date": "2026-03-30 13:00:00",
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 117,
+          "procedure_id": 97,
+          "amount": 1200,
+          "status": "pending",
+          "payment_date": null,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 118,
+          "procedure_id": 98,
+          "amount": 490,
+          "status": "paid",
+          "payment_date": "2026-03-15 10:00:00",
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 119,
+          "procedure_id": 98,
+          "amount": 1000,
+          "status": "pending",
+          "payment_date": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 120,
+          "procedure_id": 99,
+          "amount": 690,
+          "status": "paid",
+          "payment_date": "2026-03-20 11:30:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 121,
+          "procedure_id": 100,
+          "amount": 850,
+          "status": "paid",
+          "payment_date": "2026-02-28 09:00:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 122,
+          "procedure_id": 101,
+          "amount": 2100,
+          "status": "paid",
+          "payment_date": "2026-03-01 14:00:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 123,
+          "procedure_id": 102,
+          "amount": 1350,
+          "status": "paid",
+          "payment_date": "2026-01-10 10:00:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 124,
+          "procedure_id": 103,
+          "amount": 480,
+          "status": "paid",
+          "payment_date": "2026-02-05 11:00:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 125,
+          "procedure_id": 104,
+          "amount": 990,
+          "status": "pending",
+          "payment_date": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 126,
+          "procedure_id": 105,
+          "amount": 290,
+          "status": "paid",
+          "payment_date": "2026-03-25 16:00:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 127,
+          "procedure_id": 106,
+          "amount": 1600,
+          "status": "paid",
+          "payment_date": "2026-02-18 12:00:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 128,
+          "procedure_id": 107,
+          "amount": 1750,
+          "status": "pending",
+          "payment_date": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 129,
+          "procedure_id": 108,
+          "amount": 700,
+          "status": "paid",
+          "payment_date": "2026-03-10 10:30:00",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 130,
+          "procedure_id": 108,
+          "amount": 1190,
+          "status": "pending",
+          "payment_date": null,
+          "created_at": "2026-04-05 15:03:20"
+        }
+      ],
+      "documentation": [
+        {
+          "id": 171,
+          "procedure_id": 95,
+          "title": "Pasaporte vigente",
+          "status": "pending",
+          "file_name": "pasaporte-pendiente.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 172,
+          "procedure_id": 95,
+          "title": "Titulo universitario",
+          "status": "uploaded",
+          "file_name": "titulo-subido.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 173,
+          "procedure_id": 99,
+          "title": "Titulo universitario apostillado",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 174,
+          "procedure_id": 99,
+          "title": "Traduccion jurada al espanol",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 175,
+          "procedure_id": 100,
+          "title": "Pasaporte vigente",
+          "status": "uploaded",
+          "file_name": "pasaporte-vigente.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 176,
+          "procedure_id": 100,
+          "title": "Carta de admision universitaria",
+          "status": "uploaded",
+          "file_name": "titulo-universitario.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 177,
+          "procedure_id": 100,
+          "title": "Seguro medico privado",
+          "status": "uploaded",
+          "file_name": "seguro-medico.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 178,
+          "procedure_id": 100,
+          "title": "Extracto bancario 3 meses",
+          "status": "uploaded",
+          "file_name": "extracto-bancario.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 179,
+          "procedure_id": 101,
+          "title": "Certificado de matrimonio apostillado",
+          "status": "uploaded",
+          "file_name": "certificado-matrimonio.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 180,
+          "procedure_id": 101,
+          "title": "Partidas de nacimiento hijos",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 181,
+          "procedure_id": 102,
+          "title": "Pasaporte vigente",
+          "status": "uploaded",
+          "file_name": "pasaporte-vigente.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 182,
+          "procedure_id": 102,
+          "title": "Contrato de trabajo firmado",
+          "status": "uploaded",
+          "file_name": "contrato-trabajo.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 183,
+          "procedure_id": 102,
+          "title": "Certificado de empadronamiento",
+          "status": "uploaded",
+          "file_name": "empadronamiento.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 184,
+          "procedure_id": 102,
+          "title": "Antecedentes penales apostillados",
+          "status": "uploaded",
+          "file_name": "certificado-antecedentes.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 185,
+          "procedure_id": 103,
+          "title": "Fotografia carnet",
+          "status": "uploaded",
+          "file_name": "foto-carnet.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 186,
+          "procedure_id": 103,
+          "title": "Empadronamiento reciente",
+          "status": "uploaded",
+          "file_name": "empadronamiento.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 187,
+          "procedure_id": 105,
+          "title": "Pasaporte o documento identidad",
+          "status": "uploaded",
+          "file_name": "pasaporte-vigente.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 188,
+          "procedure_id": 105,
+          "title": "Poder notarial autorizado",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 189,
+          "procedure_id": 106,
+          "title": "Certificado de matrimonio apostillado",
+          "status": "uploaded",
+          "file_name": "certificado-matrimonio.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 190,
+          "procedure_id": 106,
+          "title": "Acreditacion de solvencia economica",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 191,
+          "procedure_id": 106,
+          "title": "Contrato de alquiler vivienda adecuada",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 192,
+          "procedure_id": 107,
+          "title": "Historial de residencia 5 anos",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 193,
+          "procedure_id": 107,
+          "title": "Declaracion renta IRPF",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 194,
+          "procedure_id": 107,
+          "title": "Seguro medico vigente",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 195,
+          "procedure_id": 108,
+          "title": "Pasaporte vigente",
+          "status": "uploaded",
+          "file_name": "pasaporte-vigente.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 196,
+          "procedure_id": 108,
+          "title": "Contrato de trabajo indefinido",
+          "status": "uploaded",
+          "file_name": "contrato-trabajo.pdf",
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 197,
+          "procedure_id": 108,
+          "title": "Vida laboral actualizada",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 198,
+          "procedure_id": 108,
+          "title": "Nominas ultimos 3 meses",
+          "status": "pending",
+          "file_name": null,
+          "uploaded_at": null,
+          "created_at": "2026-04-05 15:03:20"
+        }
+      ],
+      "family_members": [
+        {
+          "id": 45,
+          "procedure_id": 96,
+          "name": "Maria Alvarez",
+          "relationship": "Conyuge",
+          "status": "pending",
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 46,
+          "procedure_id": 96,
+          "name": "Lucas Alvarez",
+          "relationship": "Hijo",
+          "status": "pending",
+          "created_at": "2026-04-05 15:03:19"
+        },
+        {
+          "id": 47,
+          "procedure_id": 101,
+          "name": "Aminata Diallo",
+          "relationship": "Conyuge",
+          "status": "pending",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 48,
+          "procedure_id": 101,
+          "name": "Ibrahim Diallo",
+          "relationship": "Hijo",
+          "status": "pending",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 49,
+          "procedure_id": 101,
+          "name": "Hawa Diallo",
+          "relationship": "Hija",
+          "status": "pending",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 50,
+          "procedure_id": 106,
+          "name": "Mei Zhang",
+          "relationship": "Conyuge",
+          "status": "pending",
+          "created_at": "2026-04-05 15:03:20"
+        },
+        {
+          "id": 51,
+          "procedure_id": 108,
+          "name": "Nour Benali",
+          "relationship": "Hija",
+          "status": "pending",
+          "created_at": "2026-04-05 15:03:20"
+        }
+      ]
+    }
+  },
+  "files": {
+    "docs": [
+      "acreditacion-solvencia.pdf",
+      "certificado-antecedentes.pdf",
+      "certificado-matrimonio.pdf",
+      "contrato-trabajo.pdf",
+      "empadronamiento.pdf",
+      "extracto-bancario.pdf",
+      "foto-carnet.pdf",
+      "partida-nacimiento.pdf",
+      "pasaporte-vigente.pdf",
+      "poder-notarial.pdf",
+      "seguro-medico.pdf",
+      "titulo-universitario.pdf"
+    ],
+    "uploads": []
+  }
+}
