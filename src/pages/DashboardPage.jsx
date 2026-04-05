@@ -69,6 +69,7 @@ const dashboardContent = {
     familyAgeInvalid: 'La edad debe estar entre 1 y 120.',
     familyListTitle: 'Familiares registrados',
     yearsSuffix: 'anos',
+    noFamilyMembersYet: 'Aun no hay familiares registrados.',
     relationships: {
       daughter: 'Hija',
       son: 'Hijo',
@@ -178,6 +179,7 @@ const dashboardContent = {
     familyAgeInvalid: 'Age must be between 1 and 120.',
     familyListTitle: 'Registered family members',
     yearsSuffix: 'years',
+    noFamilyMembersYet: 'No family members registered yet.',
     relationships: {
       daughter: 'Daughter',
       son: 'Son',
@@ -706,9 +708,6 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                 <h2>{t.testCases}</h2>
                 <p>{t.procedureTimeline}</p>
               </div>
-              <button type="button" className="btn btn-case-action" onClick={() => openFamilyModal()}>
-                {t.addFamily}
-              </button>
             </div>
 
             <div className="dashboard-case-grid">
@@ -774,14 +773,14 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                 </article>
               ))}
 
-              {familyMembersList.length > 0 && (
-                <article
-                  key="family-list"
-                  className="dashboard-case-card case-card-family wow animate__animated animate__fadeInUp"
-                  data-wow-delay="0.75s"
-                >
-                  <span className="case-tag">{t.additionalFamily}</span>
-                  <h3>{t.familyListTitle}</h3>
+              <article
+                key="family-list"
+                className="dashboard-case-card case-card-family wow animate__animated animate__fadeInUp"
+                data-wow-delay="0.75s"
+              >
+                <span className="case-tag">{t.additionalFamily}</span>
+                <h3>{t.familyListTitle}</h3>
+                {familyMembersList.length > 0 ? (
                   <ul className="family-list">
                     {familyMembersList.map((member) => (
                       <li key={`family-row-${member.id}`} className="family-list-item">
@@ -796,8 +795,19 @@ function DashboardPage({ language = 'es', onLanguageChange = () => {} }) {
                       </li>
                     ))}
                   </ul>
-                </article>
-              )}
+                ) : (
+                  <p className="case-empty-message">{t.noFamilyMembersYet}</p>
+                )}
+                <div className="case-actions">
+                  <button
+                    type="button"
+                    className="btn btn-case-action"
+                    onClick={() => openFamilyModal()}
+                  >
+                    {t.addFamily}
+                  </button>
+                </div>
+              </article>
             </div>
           </section>
 

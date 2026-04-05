@@ -1191,6 +1191,11 @@ h1 {
   text-align: right;
 }
 
+.case-empty-message {
+  margin: 0.9rem 0 0;
+  color: var(--text-soft);
+}
+
 .dashboard-modal-overlay {
   position: fixed;
   inset: 0;
